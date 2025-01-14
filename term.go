@@ -235,6 +235,9 @@ func (t *Terminal) RemoveListener(listener chan Config) {
 // Resize is called when this terminal widget has been resized.
 // It ensures that the virtual terminal is within the bounds of the widget.
 func (t *Terminal) Resize(s fyne.Size) {
+	// Make sure we don't overwhelm the machine with this call
+	time.Sleep(time.Millisecond * 50) //TODO: Make this configurable?
+
 	cellSize := t.guessCellSize()
 	cols := uint(math.Floor(float64(s.Width) / float64(cellSize.Width)))
 	rows := uint(math.Floor(float64(s.Height) / float64(cellSize.Height)))
